@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Painel de presença – atendimentos</title>
+<style>
+:root{--bg:#f6f5f2;--card:#fff;--txt:#1d1d1b;--sub:#5f5e5a;--mut:#8a8984;--bd:#e3e1da;--ok:#1f7a4d;--okbg:#e3f4ea;--no:#b3261e;--nobg:#fbe5e3;--acc:#2a78d6;--neu:#c9c6bd}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--txt);font-size:15px;line-height:1.5}
+main{max-width:1100px;margin:0 auto;padding:24px 16px 48px}
+h1{font-size:22px;font-weight:600;margin:0 0 4px}
+h2{font-size:16px;font-weight:600;margin:0 0 12px}
+.sub{color:var(--sub);font-size:13px}
+.grid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:16px}
+@media(max-width:800px){.grid2{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:16px 18px;margin-top:16px}
+.grid2 .card{margin-top:0}
+input,button{font:inherit}
+input[type=text],input[type=date],input[type=number]{padding:7px 10px;border:1px solid var(--bd);border-radius:8px;background:#fff;color:var(--txt)}
+input[type=number]{width:70px}
+button{padding:7px 12px;border:1px solid var(--bd);border-radius:8px;background:#fff;cursor:pointer;color:var(--txt)}
+button:hover{border-color:#b9b7ae}
+button.pri{background:var(--acc);border-color:var(--acc);color:#fff}
+button.danger{color:var(--no)}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;max-height:180px;overflow-y:auto}
+.chip{display:inline-flex;align-items:center;gap:4px;background:var(--bg);border:1px solid var(--bd);border-radius:999px;padding:2px 4px 2px 12px;font-size:13px}
+.chip button{border:none;background:none;padding:0 6px;color:var(--mut);font-size:15px}
+.lanc{width:100%;border-collapse:collapse;margin-top:10px}
+.lanc td{padding:6px 0;border-bottom:1px solid var(--bd)}
+.lanc td:last-child{text-align:right}
+.st{display:inline-flex;gap:4px}
+.st button{padding:3px 10px;font-size:13px}
+.st button.on-p{background:var(--okbg);border-color:var(--ok);color:var(--ok)}
+.st button.on-f{background:var(--nobg);border-color:var(--no);color:var(--no)}
+.scroll{max-height:340px;overflow-y:auto}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-top:16px}
+.kpi{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:12px 16px}
+.kpi .l{font-size:13px;color:var(--sub)}
+.kpi .v{font-size:26px;font-weight:600;font-variant-numeric:tabular-nums}
+.heat{overflow-x:auto}
+.heat table{border-collapse:separate;border-spacing:3px;font-size:13px;width:100%;min-width:620px}
+.heat th{font-weight:500;color:var(--sub);text-align:center;padding:2px}
+.heat .n{text-align:left;white-space:nowrap;padding-right:10px;color:var(--txt)}
+.heat td.c div{border-radius:5px;height:30px;display:flex;align-items:center;justify-content:center;font-variant-numeric:tabular-nums}
+.bar{display:grid;grid-template-columns:150px minmax(0,1fr);gap:10px;align-items:center;margin:6px 0;font-size:13px}
+.bar .nm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bar .t{display:flex;align-items:center;gap:8px}
+.bar .b{height:18px;border-radius:0 4px 4px 0;min-width:2px}
+.legend{display:flex;gap:10px;align-items:center;font-size:12px;color:var(--sub);margin-top:10px;flex-wrap:wrap}
+.legend .s{width:22px;height:12px;border-radius:3px;display:inline-block;vertical-align:middle;margin-right:4px}
+.months{display:flex;gap:6px;align-items:flex-end;height:170px;padding-top:6px}
+.months .m{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;font-size:12px;color:var(--sub);min-width:0}
+.months .m .b{width:70%;max-width:40px;background:var(--no);border-radius:4px 4px 0 0;min-height:2px}
+.months .m .v{color:var(--txt);font-variant-numeric:tabular-nums}
+.empty{color:var(--mut);font-size:14px;padding:6px 0}
+.note{font-size:12px;color:var(--mut);margin-top:24px}
+.tbl{border-collapse:collapse;width:100%;font-size:14px}.tbl th,.tbl td{padding:6px 8px;border-bottom:1px solid var(--bd);text-align:right;font-variant-numeric:tabular-nums}.tbl th:first-child,.tbl td:first-child{text-align:left}.tbl th{color:var(--sub);font-weight:500}
+.login{max-width:360px;margin:60px auto}
+.salvo{font-size:13px;color:var(--sub)}
+</style>
+</head>
+<body>
+<main>
+  <h1>Painel de presença – atendimentos</h1>
+  <div class="sub" id="status">Carregando dados…</div>
+
+  <section class="card">
+    <div class="row" style="justify-content:space-between">
+      <h2 style="margin:0">Período analisado</h2>
+      <div class="row">
+        <label class="sub" for="ini">De</label><input type="date" id="ini" value="2026-02-03">
+        <label class="sub" for="fim">até</label><input type="date" id="fim" value="2026-11-04">
+        <button type="button" id="atualizar">Atualizar</button>
+      </div>
+    </div>
+  </section>
+
+  <div class="kpis" id="kpis"></div>
+
+  <section class="card">
+    <h2>Taxa de faltas por mês</h2>
+    <div class="sub">Percentual dos atendimentos do mês em que houve falta.</div>
+    <div class="months" id="months"></div>
+  </section>
+
+  <section class="card">
+    <h2>Detalhe por mês</h2>
+    <div id="tabela"></div>
+  </section>
+
+  <p class="note">Dados agregados. Nenhum usuário é identificado neste painel.</p>
+</main>
+<script>
+const MESES = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+const $ = id => document.getElementById(id);
+const pct = x => Math.round(x*100) + '%';
+const rotMes = m => `${MESES[+m.slice(5)-1]}/${m.slice(2,4)}`;
+function mesesDoPeriodo(ini, fim){
+  const out = []; let [y,m] = ini.slice(0,7).split('-').map(Number); const [yf,mf] = fim.slice(0,7).split('-').map(Number);
+  while (y < yf || (y === yf && m <= mf)) { out.push(`${y}-${String(m).padStart(2,'0')}`); m++; if (m>12){m=1;y++;} if (out.length>60) break; }
+  return out;
+}
+let pedido = 0;
+async function carregar(){
+  let ini = $('ini').value || '2026-02-03', fim = $('fim').value || '2026-11-04';
+  if (ini > fim) [ini, fim] = [fim, ini];
+  const meu = ++pedido;
+  $('status').textContent = 'Carregando dados…';
+  try {
+    const r = await fetch(`/api/resumo?ini=${ini}&fim=${fim}`, {cache:'no-store'});
+    if (!r.ok) throw new Error();
+    const d = await r.json();
+    if (meu !== pedido) return;
+    render(d, mesesDoPeriodo(ini, fim));
+    $('status').textContent = d.atualizado ? 'Última atualização dos dados: ' + new Date(d.atualizado).toLocaleString('pt-BR', {dateStyle:'short', timeStyle:'short'}) : 'Ainda não há dados lançados.';
+  } catch(e){
+    if (meu === pedido) $('status').textContent = 'Não foi possível carregar os dados agora. Tente atualizar em instantes.';
+  }
+}
+function render(d, meses){
+  const t = d.total.atendimentos, f = d.total.faltas;
+  $('kpis').innerHTML = [['Atendimentos no período', t], ['Faltas no período', f], ['Taxa de faltas no período', t ? pct(f/t) : '–']]
+    .map(([l,v]) => `<div class="kpi"><div class="l">${l}</div><div class="v">${v}</div></div>`).join('');
+  const porMes = Object.fromEntries(d.meses.map(x => [x.mes, x]));
+  if (!t){ $('months').innerHTML = '<div class="empty">Nenhum atendimento no período escolhido.</div>'; $('tabela').innerHTML=''; return; }
+  $('months').innerHTML = meses.map(m => {
+    const c = porMes[m]; const r = c && c.atendimentos ? c.faltas/c.atendimentos : 0;
+    return `<div class="m" title="${c ? `${c.faltas} falta(s) em ${c.atendimentos} atendimento(s)` : 'Sem atendimentos'}"><span class="v">${c ? pct(r) : '–'}</span><div class="b" style="height:${c ? Math.max(r*120,2) : 0}px;${c?'':'background:transparent'}"></div><span>${rotMes(m)}</span></div>`;
+  }).join('');
+  $('tabela').innerHTML = `<table class="tbl"><thead><tr><th>Mês</th><th>Atendimentos</th><th>Faltas</th><th>Taxa de faltas</th></tr></thead><tbody>${
+    meses.map(m => { const c = porMes[m]; return c ? `<tr><td>${rotMes(m)}</td><td>${c.atendimentos}</td><td>${c.faltas}</td><td>${pct(c.faltas/c.atendimentos)}</td></tr>` : `<tr><td>${rotMes(m)}</td><td>–</td><td>–</td><td>–</td></tr>`; }).join('')
+  }<tr><td><b>Total</b></td><td><b>${t}</b></td><td><b>${f}</b></td><td><b>${pct(f/t)}</b></td></tr></tbody></table>`;
+}
+['ini','fim'].forEach(id => $(id).addEventListener('change', carregar));
+$('atualizar').addEventListener('click', carregar);
+carregar();
+</script>
+</body>
+</html>
