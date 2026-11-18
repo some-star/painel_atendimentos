@@ -53,7 +53,12 @@ button.danger{color:var(--no)}
 .months{display:flex;gap:6px;align-items:flex-end;height:170px;padding-top:6px}
 .months .m{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;font-size:12px;color:var(--sub);min-width:0}
 .months .m .b{width:70%;max-width:40px;background:var(--no);border-radius:4px 4px 0 0;min-height:2px}
-.months .m .v{color:var(--txt);font-variant-numeric:tabular-nums}
+.months .m .v{color:var(--txt);font-variant-numeric:tabular-nums;font-size:11px;white-space:nowrap}
+.months .par{display:flex;gap:3px;align-items:flex-end;justify-content:center;width:100%;flex:1;min-height:0}
+.months .col{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;width:46%;max-width:30px}
+.months .col .b{width:100%;max-width:none}
+.months .col .b.ok{background:var(--ok)}
+.months .rot{margin-top:4px}
 .empty{color:var(--mut);font-size:14px;padding:6px 0}
 .note{font-size:12px;color:var(--mut);margin-top:24px}
 .tbl{border-collapse:collapse;width:100%;font-size:14px}.tbl th,.tbl td{padding:6px 8px;border-bottom:1px solid var(--bd);text-align:right;font-variant-numeric:tabular-nums}.tbl th:first-child,.tbl td:first-child{text-align:left}.tbl th{color:var(--sub);font-weight:500}
@@ -82,6 +87,7 @@ button.danger{color:var(--no)}
   <section class="card">
     <h2>Taxa de faltas por mês</h2>
     <div class="sub">Percentual dos atendimentos do mês em que houve falta.</div>
+    <div class="legend" style="margin-top:0"><span><span class="s" style="background:var(--ok)"></span>Atendimentos no mês (quantidade)</span><span><span class="s" style="background:var(--no)"></span>Taxa de faltas (%)</span></div>
     <div class="months" id="months"></div>
   </section>
 
@@ -125,9 +131,13 @@ function render(d, meses){
     .map(([l,v]) => `<div class="kpi"><div class="l">${l}</div><div class="v">${v}</div></div>`).join('');
   const porMes = Object.fromEntries(d.meses.map(x => [x.mes, x]));
   if (!t){ $('months').innerHTML = '<div class="empty">Nenhum atendimento no período escolhido.</div>'; $('tabela').innerHTML=''; return; }
+  const maxAt = Math.max(1, ...meses.map(m => porMes[m] ? porMes[m].atendimentos : 0));
   $('months').innerHTML = meses.map(m => {
     const c = porMes[m]; const r = c && c.atendimentos ? c.faltas/c.atendimentos : 0;
-    return `<div class="m" title="${c ? `${c.faltas} falta(s) em ${c.atendimentos} atendimento(s)` : 'Sem atendimentos'}"><span class="v">${c ? pct(r) : '–'}</span><div class="b" style="height:${c ? Math.max(r*120,2) : 0}px;${c?'':'background:transparent'}"></div><span>${rotMes(m)}</span></div>`;
+    return `<div class="m" title="${c ? `${c.atendimentos} atendimento(s), ${c.faltas} falta(s)` : 'Sem atendimentos'}"><div class="par">` +
+      `<div class="col"><span class="v">${c ? c.atendimentos : '–'}</span><div class="b ok" style="height:${c ? Math.max(c.atendimentos/maxAt*120,2) : 0}px"></div></div>` +
+      `<div class="col"><span class="v">${c ? pct(r) : ''}</span><div class="b" style="height:${c ? Math.max(r*120,2) : 0}px;${c?'':'background:transparent'}"></div></div>` +
+      `</div><span class="rot">${rotMes(m)}</span></div>`;
   }).join('');
   $('tabela').innerHTML = `<table class="tbl"><thead><tr><th>Mês</th><th>Atendimentos</th><th>Faltas</th><th>Taxa de faltas</th></tr></thead><tbody>${
     meses.map(m => { const c = porMes[m]; return c ? `<tr><td>${rotMes(m)}</td><td>${c.atendimentos}</td><td>${c.faltas}</td><td>${pct(c.faltas/c.atendimentos)}</td></tr>` : `<tr><td>${rotMes(m)}</td><td>–</td><td>–</td><td>–</td></tr>`; }).join('')
