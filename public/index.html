@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Painel de presença – atendimentos</title>
+<title>Atendimentos PEDIASUIT</title>
 <style>
 :root{--bg:#f6f5f2;--card:#fff;--txt:#1d1d1b;--sub:#5f5e5a;--mut:#8a8984;--bd:#e3e1da;--ok:#1f7a4d;--okbg:#e3f4ea;--no:#b3261e;--nobg:#fbe5e3;--acc:#2a78d6;--neu:#c9c6bd}
 *{box-sizing:border-box}
@@ -68,7 +68,7 @@ button.danger{color:var(--no)}
 </head>
 <body>
 <main>
-  <h1>Painel de presença – atendimentos</h1>
+  <h1>Atendimentos PEDIASUIT</h1>
   <div class="sub" id="status">Carregando dados…</div>
 
   <section class="card">
@@ -85,8 +85,7 @@ button.danger{color:var(--no)}
   <div class="kpis" id="kpis"></div>
 
   <section class="card">
-    <h2>Taxa de faltas por mês</h2>
-    <div class="sub">Percentual dos atendimentos do mês em que houve falta.</div>
+    <h2>Atendimentos x faltas por mês</h2>
     <div class="legend" style="margin-top:0"><span><span class="s" style="background:var(--ok)"></span>Atendimentos no mês (quantidade)</span><span><span class="s" style="background:var(--no)"></span>Taxa de faltas (%)</span></div>
     <div class="months" id="months"></div>
   </section>
@@ -96,7 +95,7 @@ button.danger{color:var(--no)}
     <div id="tabela"></div>
   </section>
 
-  <p class="note">Dados agregados. Nenhum usuário é identificado neste painel.</p>
+  <p class="note">© 2026 | Todos os direitos reservados. APAE Tambaú | Desenvolvido por A.R.</p>
 </main>
 <script>
 const MESES = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
