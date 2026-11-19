@@ -69,7 +69,7 @@ button.danger{color:var(--no)}
 </head>
 <body>
 <section class="card login" id="telaLogin">
-  <h2>Área de lançamento</h2>
+  <h2>Lançamentos</h2>
   <form id="fLogin" class="row">
     <input type="password" id="senha" placeholder="Senha" style="flex:1" autocomplete="current-password">
     <button class="pri" type="submit">Entrar</button>
@@ -80,8 +80,8 @@ button.danger{color:var(--no)}
 <main id="app" hidden>
   <div class="row" style="justify-content:space-between">
     <div>
-      <h1>Administração – painel de presença</h1>
-      <div class="sub">Só você vê esta página. O painel público mostra apenas totais e taxas por mês. <a href="/" target="_blank">Abrir painel público</a></div>
+      <h1>Painel de presença</h1>
+      <div class="sub">O painel público mostra apenas totais e taxas por mês. <a href="/" target="_blank">Abrir painel público</a></div>
     </div>
     <div class="row"><span class="salvo" id="salvo"></span><button type="button" id="sair">Sair</button></div>
   </div>
@@ -122,20 +122,20 @@ button.danger{color:var(--no)}
   <div class="kpis" id="kpis"></div>
 
   <section class="card">
-    <h2>Faltas por usuário e por mês (visível só para você)</h2>
+    <h2>Faltas por usuário e por mês</h2>
     <div class="sub">Cada célula mostra faltas / atendimentos no mês. Quanto mais escura, maior a proporção de faltas.</div>
     <div class="heat" id="heat" style="margin-top:10px"></div>
     <div class="legend" id="legHeat"></div>
   </section>
 
   <section class="card">
-    <h2>Total de faltas por usuário (visível só para você)</h2>
+    <h2>Total de faltas por usuário</h2>
     <div class="sub" id="subBars"></div>
     <div id="bars" style="margin-top:8px"></div>
   </section>
 
   <section class="card">
-    <h2>Taxa de faltas do grupo por mês</h2>
+    <h2>Taxa de faltas por mês</h2>
     <div class="legend" style="margin-top:0"><span><span class="s" style="background:var(--ok)"></span>Atendimentos no mês (quantidade)</span><span><span class="s" style="background:var(--no)"></span>Taxa de faltas (%)</span></div>
     <div class="months" id="months"></div>
   </section>
